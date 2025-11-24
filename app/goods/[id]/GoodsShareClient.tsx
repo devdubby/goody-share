@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AppBanner from "../../components/AppBanner";
 
 type PostItem = {
   id: number;
@@ -50,7 +51,7 @@ type PostDetail = {
   isNegotiable: string;
   thumbnailUrl: string;
   artist: Artist;
-  goodsCategory: GoodsCategory;
+  goodsCategory?: GoodsCategory;
   user: User;
   status: string;
   viewCount: number;
@@ -72,7 +73,7 @@ type PostDetail = {
   postImages: PostImage[];
   createdAt: string;
   updatedAt: string;
-  tradeMethod?: string; // 거래방식 (예: "편의점 택배, 직거래")
+  tradeMethod?: string;
 };
 
 type Props = {
@@ -89,12 +90,9 @@ function formatTimeAgo(dateString: string): string {
 
   if (diffInSeconds < 60) return "방금 전";
   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}분 전`;
-  if (diffInSeconds < 86400)
-    return `${Math.floor(diffInSeconds / 3600)}시간 전`;
-  if (diffInSeconds < 604800)
-    return `${Math.floor(diffInSeconds / 86400)}일 전`;
-  if (diffInSeconds < 2592000)
-    return `${Math.floor(diffInSeconds / 604800)}주 전`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}시간 전`;
+  if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}일 전`;
+  if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 604800)}주 전`;
   return `${Math.floor(diffInSeconds / 2592000)}개월 전`;
 }
 
@@ -125,7 +123,6 @@ export default function GoodsShareClient({
     }, 2500);
   };
 
-  // 해시태그 배열 생성
   const hashtags = [
     post.hashtag1,
     post.hashtag2,
@@ -134,14 +131,19 @@ export default function GoodsShareClient({
     post.hashtag5,
   ].filter((tag) => tag && tag.trim() !== "");
 
-  // 모든 이미지 배열 (썸네일 + postImages)
   const allImages = [
     post.thumbnailUrl,
     ...post.postImages.map((img) => img.imageUrl),
   ];
 
+    
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-24">
+          
+          <div className="bottom-0" >
+          <AppBanner onClick={handleOpenApp} position="bottom" />
+        </div>
+          
       {/* 이미지 갤러리 */}
       <div className="relative w-full aspect-square bg-gray-100">
         <div className="relative w-full h-full overflow-x-scroll snap-x snap-mandatory scrollbar-hide">
@@ -150,12 +152,6 @@ export default function GoodsShareClient({
               <div
                 key={index}
                 className="w-full h-full flex-shrink-0 snap-center"
-                onScroll={(e) => {
-                  const scrollLeft = e.currentTarget.scrollLeft;
-                  const width = e.currentTarget.offsetWidth;
-                  const newIndex = Math.round(scrollLeft / width);
-                  setCurrentImageIndex(newIndex);
-                }}
               >
                 <img
                   src={imageUrl}
@@ -179,22 +175,11 @@ export default function GoodsShareClient({
       <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 rounded-full overflow-hidden">
-            {post.user.profileImageUrl ? (
-              <img
-                src={post.user.profileImageUrl}
-                alt={post.user.nickname}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              // <div className="w-full h-full flex items-center justify-center">
-              <img
-                src="/user-fill.svg"
-                alt="user"
-                width={"100%"}
-                height={"100%"}
-              />
-              // </div>
-            )}
+            <img
+              src={post.user.profileImageUrl || "/user-fill.svg"}
+              alt={post.user.nickname}
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-gray-900">
@@ -228,33 +213,14 @@ export default function GoodsShareClient({
             </div>
           </div>
         </div>
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          className="text-gray-400"
-        >
-          <path
-            d="M9 18L15 12L9 6"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
       </div>
 
       {/* 상품 정보 */}
       <div className="px-5 py-3">
-        {/* 제목 */}
         <h1 className="text-lg font-bold text-gray-900 mb-2.5">{post.title}</h1>
 
-        {/* 메타 정보 */}
         <div className="flex items-center justify-between mb-2.5">
-          <span className="text-xs text-gray-500">
-            {formatTimeAgo(post.createdAt)}
-          </span>
+          <span className="text-xs text-gray-500">{formatTimeAgo(post.createdAt)}</span>
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1">
               <img src="/eye.svg" alt="view" width={14} height={14} />
@@ -266,26 +232,19 @@ export default function GoodsShareClient({
             </div>
             <div className="flex items-center gap-1">
               <img src="/chat.svg" alt="chat" width={14} height={14} />
-              <span className="text-xs text-gray-600">
-                {post.chatRoomCount}
-              </span>
+              <span className="text-xs text-gray-600">{post.chatRoomCount}</span>
             </div>
           </div>
         </div>
 
-        {/* 정보 테이블 */}
         <div className="space-y-1.5">
           <div className="flex items-center gap-4 py-1.5">
             <span className="text-sm text-gray-500 w-16">그룹명</span>
-            <span className="text-sm text-gray-700 underline">
-              {post.artist.korName}
-            </span>
+            <span className="text-sm text-gray-700 underline">{post.artist.korName}</span>
           </div>
           <div className="flex items-center gap-4 py-1.5">
             <span className="text-sm text-gray-500 w-16">카테고리</span>
-            <span className="text-sm text-gray-700">
-              {post.goodsCategory.name}
-            </span>
+            <span className="text-sm text-gray-700">{post.goodsCategory?.name || "카테고리 없음"}</span>
           </div>
           {post.tradeMethod && (
             <div className="flex items-center gap-4 py-1.5">
@@ -301,13 +260,11 @@ export default function GoodsShareClient({
           </div>
         </div>
 
-        {/* 설명 */}
         <div className="mt-6 mb-4">
           <p className="text-base text-gray-900 whitespace-pre-wrap leading-6">
             {post.description}
           </p>
 
-          {/* 해시태그 */}
           {hashtags.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-6">
               {hashtags.map((tag, index) => (
@@ -323,92 +280,44 @@ export default function GoodsShareClient({
         </div>
       </div>
 
-      <div className="h-2 bg-gray-50" />
-
-      {/* 굿즈 선택 섹션 */}
+      {/* 판매 중 굿즈 */}
       <div className="px-5 py-3">
-        <h2 className="text-lg font-bold text-gray-900 mb-3">
-          판매하고 있는 굿즈
-        </h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-3">판매하고 있는 굿즈</h2>
         <div className="space-y-3">
           {post.postItems.map((item, index) => {
-            const isSoldOut =
-              item.isAvailable === "N" || item.availableQuantity === 0;
-
-            // 아이템 이미지 개수 계산 (썸네일 + 추가 이미지들)
-            const imageCount = [
-              item.thumbnailUrl,
-              item.image1Url,
-              item.image2Url,
-            ].filter((url) => url && url.trim() !== "").length;
+            const isSoldOut = item.isAvailable === "N" || item.availableQuantity === 0;
+            const imageCount = [item.thumbnailUrl, item.image1Url, item.image2Url].filter(url => url && url.trim() !== "").length;
 
             return (
               <div key={item.id}>
-                <div
-                  className={`flex items-end justify-between gap-3 ${
-                    isSoldOut ? "opacity-40" : ""
-                  }`}
-                >
+                <div className={`flex items-end justify-between gap-3 ${isSoldOut ? "opacity-40" : ""}`}>
                   <div className="flex items-start gap-3 flex-1">
-                    {/* 상품 이미지 */}
-                    <div
-                      className="relative rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden"
-                      style={{ width: "66px", height: "66px" }}
-                    >
-                      <img
-                        src={item.thumbnailUrl}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="relative rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden" style={{ width: "66px", height: "66px" }}>
+                      <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover" />
                       {imageCount > 0 && (
                         <div className="absolute bottom-1 right-1 bg-black/40 rounded px-1">
-                          <span className="text-white text-[11px] font-bold">
-                            {imageCount}
-                          </span>
+                          <span className="text-white text-[11px] font-bold">{imageCount}</span>
                         </div>
                       )}
                     </div>
-
-                    {/* 상품 정보 */}
                     <div className="flex flex-col justify-center flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm text-gray-700">
-                          {item.title}
-                        </span>
-                        <span
-                          className={`inline-flex items-center px-1 py-0.5 rounded text-[11px] font-medium ${
-                            isSoldOut
-                              ? "bg-gray-50 text-gray-600"
-                              : item.availableQuantity === 1
-                              ? "bg-red-50 text-red-600"
-                              : "bg-gray-50 text-gray-600"
-                          }`}
-                        >
-                          {isSoldOut
-                            ? "품절"
-                            : `재고 ${item.availableQuantity}개`}
+                        <span className="text-sm text-gray-700">{item.title}</span>
+                        <span className={`inline-flex items-center px-1 py-0.5 rounded text-[11px] font-medium ${isSoldOut ? "bg-gray-50 text-gray-600" : item.availableQuantity === 1 ? "bg-red-50 text-red-600" : "bg-gray-50 text-gray-600"}`}>
+                          {isSoldOut ? "품절" : `재고 ${item.availableQuantity}개`}
                         </span>
                       </div>
-                      <span className="text-base font-bold text-gray-900">
-                        {item.price.toLocaleString("ko-KR")}원
-                      </span>
+                      <span className="text-base font-bold text-gray-900">{item.price.toLocaleString("ko-KR")}원</span>
                     </div>
                   </div>
                 </div>
-                {index < post.postItems.length - 1 && (
-                  <div
-                    className="h-px my-3"
-                    style={{ backgroundColor: "#DADADD" }}
-                  />
-                )}
+                {index < post.postItems.length - 1 && <div className="h-px my-3" style={{ backgroundColor: "#DADADD" }} />}
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* 하단 여백 */}
-      <div className="h-40" />
     </div>
   );
 }
