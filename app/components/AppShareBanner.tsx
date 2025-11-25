@@ -2,14 +2,13 @@ import React from "react";
 
 type Props = {
   onClick: () => void;
-  position?: "top" | "bottom";
 };
 
-export default function AppBanner({ onClick, position = "top" }: Props) {
+export default function AppShareBanner({ onClick }: Props) {
     
   return (
     <div
-      className={`fixed ${position}-0 left-0 w-full bg-gray-100 shadow-md z-50 flex justify-between items-center px-4 py-4`}
+      className={`fixed left-0 w-full bg-gray-100 shadow-md z-50 flex justify-between items-center px-4 py-4`}
     >
       <div className="flex items-center">
         <img

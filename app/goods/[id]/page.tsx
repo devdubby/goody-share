@@ -50,7 +50,7 @@ type PostDetail = {
   isNegotiable: string;
   thumbnailUrl: string;
   artist: Artist;
-  goodsCategory: GoodsCategory;
+  goodsCategoryType: GoodsCategory;
   user: User;
   status: string;
   viewCount: number;

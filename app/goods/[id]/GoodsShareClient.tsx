@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import AppBanner from "../../components/AppBanner";
+import AppShareBanner from "../../components/AppShareBanner";
 
 type PostItem = {
   id: number;
@@ -51,7 +51,7 @@ type PostDetail = {
   isNegotiable: string;
   thumbnailUrl: string;
   artist: Artist;
-  goodsCategory?: GoodsCategory;
+  goodsCategoryType?: GoodsCategory;
   user: User;
   status: string;
   viewCount: number;
@@ -138,11 +138,9 @@ export default function GoodsShareClient({
 
     
   return (
-    <div className="min-h-screen bg-white pb-24">
-          
-          <div className="bottom-0" >
-          <AppBanner onClick={handleOpenApp} position="bottom" />
-        </div>
+    <div className="min-h-screen bg-white">
+
+          <AppShareBanner onClick={handleOpenApp} />
           
       {/* 이미지 갤러리 */}
       <div className="relative w-full aspect-square bg-gray-100">
@@ -244,7 +242,7 @@ export default function GoodsShareClient({
           </div>
           <div className="flex items-center gap-4 py-1.5">
             <span className="text-sm text-gray-500 w-16">카테고리</span>
-            <span className="text-sm text-gray-700">{post.goodsCategory?.name || "카테고리 없음"}</span>
+            <span className="text-sm text-gray-700">{post.goodsCategoryType?.name || "카테고리 없음"}</span>
           </div>
           {post.tradeMethod && (
             <div className="flex items-center gap-4 py-1.5">
