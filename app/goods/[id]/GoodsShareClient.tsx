@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import AppShareBanner from "../../components/AppShareBanner";
+import AppShareBanner from '../../_shared/components';
 
 type PostItem = {
   id: number;
@@ -79,8 +79,6 @@ type PostDetail = {
 type Props = {
   post: PostDetail;
   deepLink: string;
-  iosStoreUrl: string;
-  androidStoreUrl: string;
 };
 
 function formatTimeAgo(dateString: string): string {
@@ -96,32 +94,9 @@ function formatTimeAgo(dateString: string): string {
   return `${Math.floor(diffInSeconds / 2592000)}개월 전`;
 }
 
-export default function GoodsShareClient({
-  post,
-  deepLink,
-  iosStoreUrl,
-  androidStoreUrl,
-}: Props) {
+export default function GoodsShareClient({ post, deepLink }: Props) {
+    
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const handleOpenApp = () => {
-    window.location.href = deepLink;
-    setTimeout(() => {
-      const userAgent = navigator.userAgent.toLowerCase();
-      const isIOS = /iphone|ipad|ipod/.test(userAgent);
-      const isAndroid = /android/.test(userAgent);
-
-      if (confirm("앱이 설치되어 있지 않습니다. 스토어로 이동하시겠습니까?")) {
-        if (isIOS) {
-          window.location.href = iosStoreUrl;
-        } else if (isAndroid) {
-          window.location.href = androidStoreUrl;
-        } else {
-          window.location.href = iosStoreUrl;
-        }
-      }
-    }, 2500);
-  };
 
   const hashtags = [
     post.hashtag1,
@@ -140,7 +115,7 @@ export default function GoodsShareClient({
   return (
     <div className="min-h-screen bg-white">
 
-          <AppShareBanner onClick={handleOpenApp} />
+          <AppShareBanner deepLink={deepLink} />
           
       {/* 이미지 갤러리 */}
       <div className="relative w-full aspect-square bg-gray-100">
@@ -313,9 +288,9 @@ export default function GoodsShareClient({
               </div>
             );
           })}
+          
         </div>
       </div>
-
     </div>
   );
 }
