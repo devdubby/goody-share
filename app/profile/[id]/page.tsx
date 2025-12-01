@@ -96,15 +96,11 @@ export default async function SalesProfileSharePage({ params }: Props) {
   }
 
   const deepLink = `goodyapp://profile/${id}`;
-  const iosStoreUrl = process.env.NEXT_PUBLIC_IOS_STORE_URL || 'https://apps.apple.com/kr/app/goody/id[APP_ID]';
-  const androidStoreUrl = process.env.NEXT_PUBLIC_ANDROID_STORE_URL || 'https://play.google.com/store/apps/details?id=com.goody.app';
 
   return (
     <SalesProfileShareClient
       profile={profile}
       deepLink={deepLink}
-      iosStoreUrl={iosStoreUrl}
-      androidStoreUrl={androidStoreUrl}
     />
   );
 }
