@@ -9,6 +9,7 @@ GOODY Share는 딥링크를 지원하는 GOODY 앱의 굿즈 및 판매자 프�
 ## 개발 명령어
 
 ### 설치 및 실행
+
 ```bash
 # 의존성 설치
 npm install
@@ -27,7 +28,9 @@ npm run lint
 ```
 
 ### 환경 변수
+
 `.env.local`에 필수로 설정해야 하는 변수들:
+
 - `NEXT_PUBLIC_API_BASE_URL` - 백엔드 API base URL (예: http://152.67.217.61:8080/api)
 - `NEXT_PUBLIC_BASE_URL` - 이 앱의 공개 URL (예: https://mygoody.store)
 - `NEXT_PUBLIC_IOS_STORE_URL` - iOS App Store URL
@@ -36,20 +39,24 @@ npm run lint
 ## 아키텍처
 
 ### 앱 구조
+
 Next.js 16 App Router 기반의 TypeScript, React 19, Tailwind CSS 4 애플리케이션입니다.
 
 **라우트 패턴**: 서버-클라이언트 분리 패턴을 따릅니다:
+
 - **Server Components** (`page.tsx`): 데이터 fetching, Open Graph 메타데이터 생성, 초기 렌더링 담당
 - **Client Components** (`*Client.tsx`): 인터랙션, 딥링크, UI 상태 관리 담당
 
 ### 주요 라우트
 
 #### `/goods/[id]` (굿즈 상세)
+
 - **Server**: `app/goods/[id]/page.tsx` - `GET /api/posts/:id`로부터 게시글 데이터 fetch
 - **Client**: `app/goods/[id]/GoodsShareClient.tsx` - 이미지 갤러리, 판매자 정보, 상품 아이템 렌더링
 - **Deep Link**: `goodyapp://goods/:id`
 
 #### `/profile/[id]` (판매 프로필)
+
 - **Server**: `app/profile/[id]/page.tsx` - `GET /api/users/:userId/profile`로부터 프로필 fetch
 - **Client**: `app/profile/[id]/SalesProfileShareClient.tsx` - 판매자 프로필, 평점, 거래 내역 렌더링
 - **Deep Link**: `goodyapp://profile/:id`
@@ -57,6 +64,7 @@ Next.js 16 App Router 기반의 TypeScript, React 19, Tailwind CSS 4 애플리�
 ### 공유 컴포넌트
 
 **AppShareBanner** (`app/_shared/components/AppShareBanner.tsx`):
+
 - 사용자에게 앱에서 열기를 권장하는 고정 배너
 - 2.5초 대기 후 앱 스토어로 이동하는 딥링크 처리
 - 플랫폼 감지 (iOS/Android)
@@ -73,6 +81,7 @@ Next.js 16 App Router 기반의 TypeScript, React 19, Tailwind CSS 4 애플리�
 ### API 연동
 
 모든 API 엔드포인트는 **공개** (인증 불필요):
+
 - Base URL은 `NEXT_PUBLIC_API_BASE_URL`로 설정
 - 응답 패턴: `{ success: boolean, data: T }` 또는 직접 데이터 객체
 - 에러 처리는 `null` 반환, 404 페이지 트리거
@@ -104,15 +113,19 @@ Next.js 16 App Router 기반의 TypeScript, React 19, Tailwind CSS 4 애플리�
 ## 백엔드 API 요구사항
 
 ### 굿즈 엔드포인트
+
 ```
 GET /api/posts/:id
 ```
+
 반환 데이터: title, description, thumbnailUrl, artist, goodsCategoryType, user, postItems[], postImages[], timestamps, engagement metrics
 
 ### 프로필 엔드포인트
+
 ```
 GET /api/users/:userId/profile
 ```
+
 래핑된 응답 반환: `{ success: boolean, data: UserProfile }`
 포함 데이터: userId, nickname, profileImageUrl, reviewRating, receivedReviewCount, completedInquiryCount
 
@@ -121,6 +134,7 @@ GET /api/users/:userId/profile
 React Native 앱은 딥링크 스킴 `goodyapp://` 사용
 
 공유 링크 생성 패턴:
+
 ```typescript
 const shareUrl = `${SHARE_WEB_BASE_URL}/${type}/${id}`; // type: 'goods' | 'profile'
 ```

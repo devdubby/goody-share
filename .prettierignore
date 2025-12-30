@@ -1,0 +1,21 @@
+# IDE
+.DS_Store
+.vscode
+.idea
+
+# assets
+/src/assets/svg
+# dependencies
+/node_modules
+
+# build
+/build
+
+# next
+.next/*
+
+# typescript
+tsconfig.json
+
+# yarn
+.yarn/*

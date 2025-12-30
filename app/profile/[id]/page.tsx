@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+
 import SalesProfileShareClient from './SalesProfileShareClient';
 
 type UserProfile = {
@@ -23,12 +24,9 @@ type Props = {
 // API에서 판매 프로필 정보 가져오기
 async function getSalesProfile(userId: string): Promise<UserProfile | null> {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${userId}/profile`,
-      {
-        cache: 'no-store', // 항상 최신 데이터
-      }
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${userId}/profile`, {
+      cache: 'no-store', // 항상 최신 데이터
+    });
 
     if (!response.ok) {
       return null;
@@ -97,10 +95,5 @@ export default async function SalesProfileSharePage({ params }: Props) {
 
   const deepLink = `goodyapp://profile/${id}`;
 
-  return (
-    <SalesProfileShareClient
-      profile={profile}
-      deepLink={deepLink}
-    />
-  );
+  return <SalesProfileShareClient profile={profile} deepLink={deepLink} />;
 }

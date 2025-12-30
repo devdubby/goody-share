@@ -1,6 +1,7 @@
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import GoodsShareClient from "./GoodsShareClient";
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+
+import GoodsShareClient from './GoodsShareClient';
 
 type PostItem = {
   id: number;
@@ -81,13 +82,10 @@ type Props = {
 // API에서 굿즈 정보 가져오기
 async function getGoodsDetail(id: string): Promise<PostDetail | null> {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/${id}`,
-      {
-        cache: "no-store", // 항상 최신 데이터
-      }
-    );
-    console.log("🚀 ~ getGoodsDetail ~ response:", response);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/${id}`, {
+      cache: 'no-store', // 항상 최신 데이터
+    });
+    console.log('🚀 ~ getGoodsDetail ~ response:', response);
 
     if (!response.ok) {
       return null;
@@ -97,7 +95,7 @@ async function getGoodsDetail(id: string): Promise<PostDetail | null> {
     // API 응답이 { data, success } 구조인 경우 data 추출
     return data.data || data;
   } catch (error) {
-    console.error("Failed to fetch post:", error);
+    console.error('Failed to fetch post:', error);
     return null;
   }
 }
@@ -109,16 +107,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!post) {
     return {
-      title: "굿즈를 찾을 수 없습니다",
+      title: '굿즈를 찾을 수 없습니다',
     };
   }
 
   const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/goods/${id}`;
 
   // 가격 정보: postItems가 있으면 첫 번째 아이템 가격, 없으면 가격 없음
-  const priceText = post.postItems?.[0]?.price
-    ? `${post.postItems[0].price.toLocaleString("ko-KR")}원`
-    : "";
+  const priceText = post.postItems?.[0]?.price ? `${post.postItems[0].price.toLocaleString('ko-KR')}원` : '';
 
   const description = post.description || priceText;
 
@@ -136,11 +132,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           alt: post.title,
         },
       ],
-      type: "website",
+      type: 'website',
       url: shareUrl,
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title: post.title,
       description,
       images: [post.thumbnailUrl],
@@ -158,10 +154,5 @@ export default async function GoodsSharePage({ params }: Props) {
 
   const deepLink = `goodyapp://goods/${id}`;
 
-  return (
-    <GoodsShareClient
-      post={post}
-      deepLink={deepLink}
-    />
-  );
+  return <GoodsShareClient post={post} deepLink={deepLink} />;
 }

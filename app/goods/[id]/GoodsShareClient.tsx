@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
+
 import AppShareBanner from '../../_shared/components';
 
 type PostItem = {
@@ -86,7 +87,7 @@ function formatTimeAgo(dateString: string): string {
   const past = new Date(dateString);
   const diffInSeconds = Math.floor((now.getTime() - past.getTime()) / 1000);
 
-  if (diffInSeconds < 60) return "방금 전";
+  if (diffInSeconds < 60) return '방금 전';
   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}분 전`;
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}시간 전`;
   if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}일 전`;
@@ -95,42 +96,25 @@ function formatTimeAgo(dateString: string): string {
 }
 
 export default function GoodsShareClient({ post, deepLink }: Props) {
-    
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const hashtags = [
-    post.hashtag1,
-    post.hashtag2,
-    post.hashtag3,
-    post.hashtag4,
-    post.hashtag5,
-  ].filter((tag) => tag && tag.trim() !== "");
+  const hashtags = [post.hashtag1, post.hashtag2, post.hashtag3, post.hashtag4, post.hashtag5].filter(
+    (tag) => tag && tag.trim() !== '',
+  );
 
-  const allImages = [
-    post.thumbnailUrl,
-    ...post.postImages.map((img) => img.imageUrl),
-  ];
+  const allImages = [post.thumbnailUrl, ...post.postImages.map((img) => img.imageUrl)];
 
-    
   return (
     <div className="min-h-screen bg-white">
+      <AppShareBanner deepLink={deepLink} />
 
-          <AppShareBanner deepLink={deepLink} />
-          
       {/* 이미지 갤러리 */}
       <div className="relative w-full aspect-square bg-gray-100">
         <div className="relative w-full h-full overflow-x-scroll snap-x snap-mandatory scrollbar-hide">
           <div className="flex h-full">
             {allImages.map((imageUrl, index) => (
-              <div
-                key={index}
-                className="w-full h-full flex-shrink-0 snap-center"
-              >
-                <img
-                  src={imageUrl}
-                  alt={`${post.title} ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
+              <div key={index} className="w-full h-full flex-shrink-0 snap-center">
+                <img src={imageUrl} alt={`${post.title} ${index + 1}`} className="w-full h-full object-cover" />
               </div>
             ))}
           </div>
@@ -149,38 +133,30 @@ export default function GoodsShareClient({ post, deepLink }: Props) {
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 rounded-full overflow-hidden">
             <img
-              src={post.user.profileImageUrl || "/user-fill.svg"}
+              src={post.user.profileImageUrl || '/user-fill.svg'}
               alt={post.user.nickname}
               className="w-full h-full object-cover"
             />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-gray-900">
-              {post.user.nickname}
-            </span>
+            <span className="text-sm font-semibold text-gray-900">{post.user.nickname}</span>
             <div className="flex items-center gap-1 text-xs text-gray-600">
               <span className="flex items-center gap-0.5">
                 <img src="/star-fill.svg" alt="star" width={12} height={12} />
-                <span className="font-semibold text-gray-900">
-                  {post.user.reviewRating.toFixed(1)}
+                <span className="font-semibold text-gray-900">{post.user.reviewRating.toFixed(1)}</span>
+              </span>
+              <span className="text-gray-300">•</span>
+              <span>
+                후기{' '}
+                <span className="font-semibold text-gray-700">
+                  {post.user.receivedReviewCount > 99 ? '99+' : post.user.receivedReviewCount}
                 </span>
               </span>
               <span className="text-gray-300">•</span>
               <span>
-                후기{" "}
+                거래내역{' '}
                 <span className="font-semibold text-gray-700">
-                  {post.user.receivedReviewCount > 99
-                    ? "99+"
-                    : post.user.receivedReviewCount}
-                </span>
-              </span>
-              <span className="text-gray-300">•</span>
-              <span>
-                거래내역{" "}
-                <span className="font-semibold text-gray-700">
-                  {post.user.completedInquiryCount > 99
-                    ? "99+"
-                    : post.user.completedInquiryCount}
+                  {post.user.completedInquiryCount > 99 ? '99+' : post.user.completedInquiryCount}
                 </span>
               </span>
             </div>
@@ -217,7 +193,7 @@ export default function GoodsShareClient({ post, deepLink }: Props) {
           </div>
           <div className="flex items-center gap-4 py-1.5">
             <span className="text-sm text-gray-500 w-16">카테고리</span>
-            <span className="text-sm text-gray-700">{post.goodsCategoryType?.name || "카테고리 없음"}</span>
+            <span className="text-sm text-gray-700">{post.goodsCategoryType?.name || '카테고리 없음'}</span>
           </div>
           {post.tradeMethod && (
             <div className="flex items-center gap-4 py-1.5">
@@ -227,16 +203,12 @@ export default function GoodsShareClient({ post, deepLink }: Props) {
           )}
           <div className="flex items-center gap-4 py-1.5">
             <span className="text-sm text-gray-500 w-16">가격제안</span>
-            <span className="text-sm text-gray-700">
-              {post.isNegotiable === "Y" ? "가능" : "불가능"}
-            </span>
+            <span className="text-sm text-gray-700">{post.isNegotiable === 'Y' ? '가능' : '불가능'}</span>
           </div>
         </div>
 
         <div className="mt-6 mb-4">
-          <p className="text-base text-gray-900 whitespace-pre-wrap leading-6">
-            {post.description}
-          </p>
+          <p className="text-base text-gray-900 whitespace-pre-wrap leading-6">{post.description}</p>
 
           {hashtags.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-6">
@@ -258,14 +230,19 @@ export default function GoodsShareClient({ post, deepLink }: Props) {
         <h2 className="text-lg font-bold text-gray-900 mb-3">판매하고 있는 굿즈</h2>
         <div className="space-y-3">
           {post.postItems.map((item, index) => {
-            const isSoldOut = item.isAvailable === "N" || item.availableQuantity === 0;
-            const imageCount = [item.thumbnailUrl, item.image1Url, item.image2Url].filter(url => url && url.trim() !== "").length;
+            const isSoldOut = item.isAvailable === 'N' || item.availableQuantity === 0;
+            const imageCount = [item.thumbnailUrl, item.image1Url, item.image2Url].filter(
+              (url) => url && url.trim() !== '',
+            ).length;
 
             return (
               <div key={item.id}>
-                <div className={`flex items-end justify-between gap-3 ${isSoldOut ? "opacity-40" : ""}`}>
+                <div className={`flex items-end justify-between gap-3 ${isSoldOut ? 'opacity-40' : ''}`}>
                   <div className="flex items-start gap-3 flex-1">
-                    <div className="relative rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden" style={{ width: "66px", height: "66px" }}>
+                    <div
+                      className="relative rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden"
+                      style={{ width: '66px', height: '66px' }}
+                    >
                       <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover" />
                       {imageCount > 0 && (
                         <div className="absolute bottom-1 right-1 bg-black/40 rounded px-1">
@@ -276,19 +253,22 @@ export default function GoodsShareClient({ post, deepLink }: Props) {
                     <div className="flex flex-col justify-center flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-sm text-gray-700">{item.title}</span>
-                        <span className={`inline-flex items-center px-1 py-0.5 rounded text-[11px] font-medium ${isSoldOut ? "bg-gray-50 text-gray-600" : item.availableQuantity === 1 ? "bg-red-50 text-red-600" : "bg-gray-50 text-gray-600"}`}>
-                          {isSoldOut ? "품절" : `재고 ${item.availableQuantity}개`}
+                        <span
+                          className={`inline-flex items-center px-1 py-0.5 rounded text-[11px] font-medium ${isSoldOut ? 'bg-gray-50 text-gray-600' : item.availableQuantity === 1 ? 'bg-red-50 text-red-600' : 'bg-gray-50 text-gray-600'}`}
+                        >
+                          {isSoldOut ? '품절' : `재고 ${item.availableQuantity}개`}
                         </span>
                       </div>
-                      <span className="text-base font-bold text-gray-900">{item.price.toLocaleString("ko-KR")}원</span>
+                      <span className="text-base font-bold text-gray-900">{item.price.toLocaleString('ko-KR')}원</span>
                     </div>
                   </div>
                 </div>
-                {index < post.postItems.length - 1 && <div className="h-px my-3" style={{ backgroundColor: "#DADADD" }} />}
+                {index < post.postItems.length - 1 && (
+                  <div className="h-px my-3" style={{ backgroundColor: '#DADADD' }} />
+                )}
               </div>
             );
           })}
-          
         </div>
       </div>
     </div>
