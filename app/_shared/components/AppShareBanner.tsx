@@ -34,7 +34,7 @@ const AppShareBanner = ({ deepLink }: AppShareBannerProps) => {
     <div className={`fixed left-0 w-full bg-gray-100 shadow-md z-50 flex justify-between items-center px-4 py-4`}>
       <div className="flex items-center">
         <img src="/app-logo.svg" className="w-[50px] h-[50px] rounded-xl" alt="앱 로고" />
-        <div className="flex flex-col justify-center ml-3">
+        <div className="flex flex-col justify-center ml-3 text-[#0F0F10]">
           <span className="font-semibold text-sm md:text-base">내가 찾는 굿즈 앱에서</span>
           <span className="font-semibold text-sm md:text-base">편리하게 보기</span>
         </div>
