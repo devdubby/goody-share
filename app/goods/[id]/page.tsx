@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 
 import GoodsShareClient from './GoodsShareClient';
 
+// 항상 동적 렌더링 (런타임에 페이지 생성)
+export const dynamic = 'force-dynamic';
+
 type PostItem = {
   id: number;
   title: string;
