@@ -85,7 +85,6 @@ async function getGoodsDetail(id: string): Promise<PostDetail | null> {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/${id}`, {
       cache: 'no-store', // 항상 최신 데이터
     });
-    console.log('🚀 ~ getGoodsDetail ~ response:', response);
 
     if (!response.ok) {
       return null;

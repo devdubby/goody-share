@@ -3,10 +3,10 @@ type AppShareBannerProps = {
 };
 
 const AppShareBanner = ({ deepLink }: AppShareBannerProps) => {
-  const iosStoreUrl = process.env.NEXT_PUBLIC_IOS_STORE_URL || 'https://apps.apple.com/kr/app/goody/id[APP_ID]';
+  const iosStoreUrl =
+    process.env.NEXT_PUBLIC_IOS_STORE_URL || 'https://apps.apple.com/kr/app/%EA%B5%AC%EB%94%94-goody/id6751756644';
   const androidStoreUrl =
     process.env.NEXT_PUBLIC_ANDROID_STORE_URL || 'https://play.google.com/store/apps/details?id=com.goody.app';
-
   const handleOpenApp = () => {
     // 딥링크
     window.location.href = deepLink;
