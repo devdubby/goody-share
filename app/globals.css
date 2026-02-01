@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 
+/* 다크모드 비활성화 - 항상 라이트모드 강제 */
 :root {
+  color-scheme: light only;
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -12,11 +14,8 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: light only;
 }
 
 body {

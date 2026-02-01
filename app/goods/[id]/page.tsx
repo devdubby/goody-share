@@ -84,20 +84,29 @@ type Props = {
 
 // API에서 굿즈 정보 가져오기
 async function getGoodsDetail(id: string): Promise<PostDetail | null> {
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/${id}`;
+  console.log('[getGoodsDetail] API URL:', apiUrl);
+  console.log('[getGoodsDetail] ENV:', process.env.NEXT_PUBLIC_API_BASE_URL);
+
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/${id}`, {
+    const response = await fetch(apiUrl, {
       cache: 'no-store', // 항상 최신 데이터
     });
 
+    console.log('[getGoodsDetail] Response status:', response.status);
+
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[getGoodsDetail] Response not ok:', response.status, errorText);
       return null;
     }
 
     const data = await response.json();
+    console.log('[getGoodsDetail] Success, got data');
     // API 응답이 { data, success } 구조인 경우 data 추출
     return data.data || data;
   } catch (error) {
-    console.error('Failed to fetch post:', error);
+    console.error('[getGoodsDetail] Fetch error:', error);
     return null;
   }
 }
